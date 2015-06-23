@@ -4,8 +4,31 @@
     <meta charset="utf-8"><title> Preguntas </title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
   </head>
-  <table>
+  <br/>
+  <form id="buscar" method="get" action="/quizes">
+    <div id="main">
+      <div id="cabezera">
+        <h4>Buscador<h4>
+      </div>
+      <div>
+        <label for="search">Pregunta: </label>
+        <input type="text" id="search" name="search" size="33" />
+      </div>
+      <div>
+        <input type="submit" value="Buscar" />
+      </div>
+    </div>
+  </form>
+</br>
+
+<% if (quizes.length > 0) { %>
+  <table id="ListPreguntas">
+    <tr><th>Lista de Preguntas </th></tr>
     <% var i; for (i=0; i < quizes.length; i++) { %>
       <tr><td><a href="quizes/<%= quizes[i].id %>"><%= quizes[i].pregunta %></a></td></tr>
     <% } %>
   </table>
+<% } else { %>
+  <h3>Sin resultados para la Busqueda</h3>
+<% } %>
+<br/>

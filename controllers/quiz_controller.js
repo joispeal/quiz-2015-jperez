@@ -1,8 +1,15 @@
 var models = require('../models/models.js');
 
-// Autoload - factoriza el código si ruta incluye :quizId
+function CleanSearch(search) {
+		search = search.trim();
+		search = search.replace(/\s+/,'%');
+		search = '%' + search + '%';
+		return search;
+}
+
+// Autoload - factoriza el cÃ³digo si ruta incluye :quizId
 exports.load = function(req, res, next, quizId) {
-  models.Quiz.find(quizId).then(
+  models.Quiz.findById(quizId).then(
     function(quiz) {
       if (quiz) {
         req.quiz = quiz;
@@ -14,16 +21,27 @@ exports.load = function(req, res, next, quizId) {
 
 // GET /quizes
 exports.index = function(req, res) {
-  models.Quiz.findAll().then(
-    function(quizes) {
-      res.render('quizes/index', { quizes: quizes});
-    }
-  ).catch(function(error) { next(error);});
+	if (req.query.search) {
+
+		models.Quiz.findAll({where: ["pregunta like ?", CleanSearch(req.query.search)]}).then(function(quizes){
+			res.render('quizes/index', {quizes: quizes});
+		}).catch(function(error){
+			next(error);
+		});
+	}
+	else
+	{
+		models.Quiz.findAll().then(function(quizes){
+			res.render('quizes/index', {quizes: quizes});
+		}).catch(function(error){
+			next(error);
+		});
+	}
 };
 
-//GET /quizes/:id
+// GET /quizes/:quizId(\\d+)
 exports.show = function(req, res) {
-    res.render('quizes/show', { quiz: req.quiz});
+	res.render('quizes/show', {quiz: req.quiz});
 };
 
 //GET /quizes/:id/answer
