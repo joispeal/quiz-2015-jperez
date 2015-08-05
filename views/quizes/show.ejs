@@ -5,7 +5,8 @@
     <link rel='stylesheet' href='/stylesheets/style.css' />
   </head>
     <form method="get" action="/quizes/<%= quiz.id %>/answer">
-      Pregunta: <%= quiz.pregunta %> <p>
+      Pregunta de <strong>'<%= quiz.Category.nombre %>'</strong></br>
+      <%= quiz.pregunta %> <p>
       <input name="respuesta" value="Respuesta" type="text"/>
       <input value="Enviar" type="submit">
     </form>

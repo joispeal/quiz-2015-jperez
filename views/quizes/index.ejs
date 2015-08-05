@@ -23,10 +23,14 @@
 
 <% if (quizes.length > 0) { %>
   <table id="ListPreguntas">
-    <tr><th>Lista de Preguntas </th></tr>
+    <tr>
+      <th>Lista de Preguntas </th>
+      <th>Lista de Categorías </th>
+    </tr>
     <% var i; for (i=0; i < quizes.length; i++) { %>
       <tr>
         <td><a href="quizes/<%= quizes[i].id %>"><%= quizes[i].pregunta %></a></td>
+        <td><%= quizes[i].Category === null ? '<No asignada>' : quizes[i].Category.nombre %></td>
         <td><a href="quizes/<%= quizes[i].id %>/edit"><button>editar</button></a></td>
         <td>
           <form method="post" action="quizes/<%= quizes[i].id %>?_method=delete">

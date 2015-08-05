@@ -29,21 +29,40 @@ var sequelize = new Sequelize(DB_name, user, pwd,
 //Importar la definición de la tabla Quiz
 var quiz_path = path.join(__dirname, 'quiz');
 var Quiz = sequelize.import(quiz_path);
+var Category = sequelize.import(path.join(__dirname, 'category'));
+
+Quiz.belongsTo(Category);
+Category.hasMany(Quiz);
 
 exports.Quiz = Quiz; //exportar definición de tabla Quiz
+exports.Category = Category // Exportamos la definición de la tabla CATEGORIAS
 
 //sequelize.sync() inicializa tabla de pregunta en DB
 sequelize.sync().then(function() {
   //then(..) ejecuta el manejador una vez creada la tabla
+  // Creamos las categorías...
+  Category.count().then(function(count){
+		if(count === 0) { //la tabla se inicializa solo si está vacía
+			Category.create({nombre: 'Humanidades'});
+			Category.create({nombre: 'Ocio'});
+			Category.create({nombre: 'Tecnología'});
+			Category.create({nombre: 'Ciencias'});
+			Category.create({nombre: 'Otros'})
+      .then(function(){console.log('Base de datos CATEGORIAS inicializada')});
+		};
+	});
+ // Creamos las preguntas...
   Quiz.count().then(function (count) {
     if (count === 0) { //la tabla se inicializa solo si está vacía
       Quiz.create({ pregunta: 'Capital de Italia',
-                    respuesta: 'Roma'
+                    respuesta: 'Roma',
+                    CategoryId: 1
                  });
       Quiz.create({ pregunta: 'Capital de portugal',
-                    respuesta: 'Lisboa'
+                    respuesta: 'Lisboa',
+                    CategoryId: 1
                  })
-      .then(function(){console.log('Base de datos inicializada')});
+      .then(function(){console.log('Base de datos Preguntas inicializada')});
     };
   });
 });
