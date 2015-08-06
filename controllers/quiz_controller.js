@@ -9,7 +9,9 @@ function CleanSearch(search) {
 
 // Autoload - factoriza el código si ruta incluye :quizId
 exports.load = function(req, res, next, quizId) {
-  models.Quiz.findById(quizId, {include: [models.Category]}).then(
+  models.Quiz.findById(quizId,
+		{include: [models.Category, models.Comment]})
+	  .then(
     function(quiz) {
       if (quiz) {
         req.quiz = quiz;

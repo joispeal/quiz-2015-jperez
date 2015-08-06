@@ -1,0 +1,11 @@
+<html>
+<head>
+  <meta charset="utf-8"><title> Preguntas </title>
+  <link rel='stylesheet' href='/stylesheets/style.css' />
+</head>
+  Añadir Comentario: <p>
+
+  <form method="post" action="/quizes/<%=quizId%>/comments/" >
+    <input type="text" id="comment" name="comment[texto]" value="" /> <p>
+    <button type="submit">Enviar</button>
+  </form>

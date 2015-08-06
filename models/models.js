@@ -29,13 +29,20 @@ var sequelize = new Sequelize(DB_name, user, pwd,
 //Importar la definición de la tabla Quiz
 var quiz_path = path.join(__dirname, 'quiz');
 var Quiz = sequelize.import(quiz_path);
+// Importar definición de la tabla Categoria
 var Category = sequelize.import(path.join(__dirname, 'category'));
+// Importar definición de la tabla Comment
+var comment_path = path.join(__dirname, 'comment');
+var Comment = sequelize.import(comment_path);
 
 Quiz.belongsTo(Category);
 Category.hasMany(Quiz);
+Comment.belongsTo(Quiz);
+Quiz.hasMany(Comment);
 
 exports.Quiz = Quiz; //exportar definición de tabla Quiz
-exports.Category = Category // Exportamos la definición de la tabla CATEGORIAS
+exports.Category = Category; // Exportamos la definición de la tabla CATEGORIAS
+exports.Comment = Comment; // Exportamos la definición de la tabla Commentarios
 
 //sequelize.sync() inicializa tabla de pregunta en DB
 sequelize.sync().then(function() {
