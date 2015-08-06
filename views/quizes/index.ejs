@@ -31,6 +31,7 @@
       <tr>
         <td><a href="quizes/<%= quizes[i].id %>"><%= quizes[i].pregunta %></a></td>
         <td><%= quizes[i].Category === null ? '<No asignada>' : quizes[i].Category.nombre %></td>
+        <%if(session.user) {%>
         <td><a href="quizes/<%= quizes[i].id %>/edit"><button>editar</button></a></td>
         <td>
           <form method="post" action="quizes/<%= quizes[i].id %>?_method=delete">
@@ -39,10 +40,13 @@
             </button>
           </form>
         </td>
+        <%}%>
       </tr>
     <% } %>
   </table><p>
-    <a href="/quizes/new"><button type="button">Crear pregunta</button></a>
+    <%if(session.user) {%>
+      <a href="/quizes/new"><button type="button">Crear pregunta</button></a>
+    <%}%>
 <% } else { %>
   <h3>Sin resultados para la Busqueda</h3>
 <% } %>
