@@ -1,6 +1,6 @@
 {
   "name": "quiz",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "private": true,
   "scripts": {
     "start": "node ./bin/www"
@@ -21,6 +21,7 @@
     "express-generator": "^4.13.1",
     "express-partials": "^0.3.0",
     "express-session": "^1.11.3",
+    "jquery": "^2.1.4",
     "method-override": "^2.3.3",
     "morgan": "^1.5.3",
     "pg": "^4.4.0",
