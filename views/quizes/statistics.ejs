@@ -1,0 +1,36 @@
+<html>
+<head>
+  <meta charset="utf-8"><title> Preguntas </title>
+  <link rel='stylesheet' href='/stylesheets/style.css' />
+</head>
+<br/>
+<table>
+	<tr>
+		<th> Estadisticas </th>
+	</tr>
+	<tr>
+		<td>Número de preguntas existentes</td>
+		<td><%= statistics.quizes %></td>
+	</tr>
+	<tr>
+		<td>Número de comentarios totales</td>
+		<td><%= statistics.comments %></td>
+	</tr>
+	<tr>
+		<td>Número medio de comentarios por pregunta</td>
+		<td><%= statistics.commentsbyQuestionAverage %></td>
+	</tr>
+	<tr>
+		<td>Número de preguntas sin comentarios</td>
+		<td><%= statistics.unpublishedComments %></td>
+	</tr>
+	<tr>
+		<td>Número de preguntas con comentarios</td>
+		<td><%= statistics.publishedComments %></td>
+	</tr>
+	<tr>
+		<td colspan="2" style="text-align: right; margin-right: 10px;">
+      <a href="/quizes">Volver</a>
+    </td>
+	</tr>
+</table>

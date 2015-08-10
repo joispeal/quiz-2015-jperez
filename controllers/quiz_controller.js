@@ -1,4 +1,13 @@
 var models = require('../models/models.js');
+var K = require('q'); // Constante
+
+var statistics = {
+	quizes: 0, // El número de preguntas
+	comments: 0, // El número de comentarios totales
+	unpublishedComments: 0, // El número de preguntas sin comentarios
+	publishedComments: 0, // El número de preguntas con comentarios
+	commentsbyQuestionAverage:0.0 // El número medio de comentarios por pregunta
+};
 
 function CleanSearch(search) {
 		search = search.trim();
@@ -125,4 +134,37 @@ exports.destroy = function(req, res, next) {
 	req.quiz.destroy().then( function() {
 		res.redirect('/quizes');
 	}).catch(function(error){next(error)});
+};
+
+// Calcular Estadisticas
+exports.calculateStatistcs = function(req, res, next) {
+	var countQuizes = models.Quiz.count().then(function(numQuestions) {
+		statistics.quizes = numQuestions;
+	});
+
+	var countComments = models.Comment.count().then(function(numComments) {
+		statistics.comments = numComments;
+	});
+
+	var countUnpublishedComments = models.Comment.countUnpublishedComments().then(function(numUnpublishedComments) {
+		statistics.unpublishedComments = numUnpublishedComments;
+	});
+
+	var countPublishedComments = models.Comment.countPublishedComments().then(function(numPublishedComments){
+		statistics.publishedComments = numPublishedComments;
+	});
+
+	K.all([countQuizes, countComments, countUnpublishedComments, countPublishedComments]).then(function() {
+		console.log(statistics.numComments);
+		if(statistics.comments > 0 && statistics.quizes > 0) {
+			statistics.commentsbyQuestionAverage = statistics.comments / statistics.quizes;
+		}
+		next();
+	}).catch(function(error) {
+		next(error);
+	});
+};
+
+exports.statistics = function(req, res, next) {
+	res.render('quizes/statistics', {statistics: statistics, errors: []});
 };
