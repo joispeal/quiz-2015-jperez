@@ -27,8 +27,31 @@ app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(partials());
 
+//Tiempo de session
+app.use(function(req, res, next) {
+  if(req.session.user) {
+    var lastActivity = new Date(req.session.user.lastActivity);
+    var now = new Date();
+
+    if(now.getDay() > lastActivity.getDay() || now.getMonth() > lastActivity.getMonth() || now.getFullYear() > lastActivity.getFullYear() ||
+       now.getHours() > lastActivity.getHours()) {
+        delete req.session.user;
+    }
+    else if(now.getMinutes() >= (lastActivity.getMinutes() + 2)) {
+      delete req.session.user;
+    } else {
+      req.session.user.lastActivity = new Date();
+    }
+  }
+  next();
+});
+
 // Helpers Dinamico
 app.use(function(req, res, next) {
+  // Volver a la raíz
+  if(typeof(req.session.redir) === 'undefined') {
+    req.session.redir = '/';
+  }
   // guardar path en session.redir para despues de login
   if (!req.path.match(/\/login|\/logout/)) {
     req.session.redir = req.path;
